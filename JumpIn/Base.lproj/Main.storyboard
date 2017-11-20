@@ -460,6 +460,9 @@
                                     <constraint firstAttribute="height" constant="37" id="fjT-0k-W8G"/>
                                 </constraints>
                                 <state key="normal" title="Button" image="house"/>
+                                <connections>
+                                    <segue destination="JmP-Pw-dtj" kind="show" id="84V-ny-AJX"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="jumps" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sqw-TD-WBW">
                                 <rect key="frame" x="99" y="371" width="176" height="48"/>
@@ -491,6 +494,16 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NOT AVAILABLE FOR NOW" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yq5-1u-iwC">
+                                <rect key="frame" x="71" y="129" width="233" height="116"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="116" id="Hwm-VM-vqm"/>
+                                    <constraint firstAttribute="width" constant="233" id="f43-6T-ZlB"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
+                                <color key="textColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HF8-nF-XgA">
                                 <rect key="frame" x="142" y="253" width="90" height="21"/>
                                 <constraints>
@@ -518,8 +531,11 @@
                             <constraint firstItem="jHE-H3-cL0" firstAttribute="bottom" secondItem="HSw-l1-HL1" secondAttribute="bottom" constant="48" id="ZwJ-5U-4PO"/>
                             <constraint firstItem="sqw-TD-WBW" firstAttribute="centerX" secondItem="K5U-yA-wjy" secondAttribute="centerX" id="crI-aP-txX"/>
                             <constraint firstItem="HSw-l1-HL1" firstAttribute="leading" secondItem="jHE-H3-cL0" secondAttribute="leading" constant="66" id="csf-ca-0vg"/>
+                            <constraint firstItem="yq5-1u-iwC" firstAttribute="top" secondItem="9bO-hc-fHh" secondAttribute="bottom" constant="16" id="dCZ-Ea-udR"/>
                             <constraint firstItem="uNh-eL-zFP" firstAttribute="centerX" secondItem="K5U-yA-wjy" secondAttribute="centerX" id="i9l-Vi-Rso"/>
                             <constraint firstItem="WEu-aM-pfB" firstAttribute="leading" secondItem="jHE-H3-cL0" secondAttribute="leading" id="jjp-Sb-4eV"/>
+                            <constraint firstItem="yq5-1u-iwC" firstAttribute="centerX" secondItem="K5U-yA-wjy" secondAttribute="centerX" id="qkj-zN-0P7"/>
+                            <constraint firstItem="HF8-nF-XgA" firstAttribute="top" secondItem="yq5-1u-iwC" secondAttribute="bottom" constant="8" id="sl0-UU-eLV"/>
                             <constraint firstItem="jHE-H3-cL0" firstAttribute="bottom" secondItem="awu-4g-F8A" secondAttribute="bottom" constant="48" id="tSj-aA-ghR"/>
                             <constraint firstItem="jHE-H3-cL0" firstAttribute="trailing" secondItem="awu-4g-F8A" secondAttribute="trailing" constant="66" id="zD1-UQ-06X"/>
                         </constraints>
@@ -585,6 +601,9 @@
                                     <constraint firstAttribute="width" constant="30" id="hZH-fX-pdc"/>
                                 </constraints>
                                 <state key="normal" title="Button" image="house"/>
+                                <connections>
+                                    <segue destination="JmP-Pw-dtj" kind="show" id="wbv-cQ-Rjb"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="jumps" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DVj-tv-7Uj">
                                 <rect key="frame" x="99" y="371" width="176" height="48"/>
@@ -608,16 +627,6 @@
                                 <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="40"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="External Sensor" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="say-bQ-50c">
-                                <rect key="frame" x="107" y="84" width="161" height="29"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="161" id="RTE-7o-ZBn"/>
-                                    <constraint firstAttribute="height" constant="29" id="Wpc-gP-0tR"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="21"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oTh-W6-jsD">
                                 <rect key="frame" x="157" y="253" width="61" height="21"/>
                                 <constraints>
@@ -625,6 +634,16 @@
                                     <constraint firstAttribute="width" constant="61" id="YDR-8w-hGF"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="21"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="External Sensor" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="say-bQ-50c">
+                                <rect key="frame" x="107" y="84" width="161" height="29"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="161" id="RTE-7o-ZBn"/>
+                                    <constraint firstAttribute="height" constant="29" id="Wpc-gP-0tR"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="21"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -2209,7 +2228,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QbF-vC-Nj3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3140" y="-754"/>
+            <point key="canvasLocation" x="3140" y="-540"/>
         </scene>
     </scenes>
     <resources>
@@ -2222,7 +2241,7 @@
         <image name="settings" width="64" height="64"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="fnP-gs-fAb"/>
+        <segue reference="wbv-cQ-Rjb"/>
         <segue reference="hFR-aO-lYB"/>
     </inferredMetricsTieBreakers>
 </document>

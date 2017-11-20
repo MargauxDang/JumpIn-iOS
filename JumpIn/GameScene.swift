@@ -8,6 +8,7 @@
 
 import SpriteKit
 import CoreMotion
+import Firebase
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
 
@@ -26,6 +27,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var playersMaxY:Int!
     var gameOver = false
     var endLevelY = 0
+    var counter = 0
+    var sessionStop = 0
 
     
     required init?(coder aDecoder: NSCoder) {
@@ -181,6 +184,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         player.physicsBody?.isDynamic = true
         player.physicsBody?.applyImpulse(CGVector(dx: 0.0, dy: 20.0)) //Boost
         
+        counter = counter+1
+        print(counter)
+        
     }
     
     //Parallaxalization effect : move "to a screen to another"
@@ -221,6 +227,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             endGame()
         }
         
+        //Stop
+        let userID = (Auth.auth().currentUser?.uid)!
+        Database.database().reference().child("sessions").child(userID).child("session1").observeSingleEvent(of: .value) { (snapshot) in
+            if let dictionary = snapshot.value as? [String: AnyObject] {
+                let newCounter = dictionary["jumps"] as? String!
+                self.sessionStop = Int(newCounter!)!
+                self.jumpStop(session: self.sessionStop)
+            }
+        }
+    }
+    
+    func jumpStop(session: Int) {
+        if counter == session {
+            endGame()
+        }
     }
     
     func endGame() {

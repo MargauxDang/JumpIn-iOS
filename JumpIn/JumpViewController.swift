@@ -18,6 +18,7 @@ class JumpViewController: UIViewController {
     var pause = false
     var sessionNb: String!
     var ref:DatabaseReference!
+    var weight:String!
     
     var timer = Timer()
     @IBOutlet var timerLabel: UILabel!
@@ -89,11 +90,26 @@ class JumpViewController: UIViewController {
     }
     
     private func addSession() {
+        let userID = (Auth.auth().currentUser?.uid)!
+        Database.database().reference().child("users").child(userID).observeSingleEvent(of: .value)
+        { (snapshot) in
+            if let dic = snapshot.value as? [String: AnyObject] {
+                self.weight = dic["weight"] as? String
+                self.calculeCalories(weight: self.weight)
+            }
+        }
+    }
+    
+    func calculeCalories(weight: String) {
         let jumpValue = jumpText.text
-        let durationValue = "0.5"
-        //let calorieHour = (7.5*3.5*60.0)/200.0
-        let calorieValue = "200"
-        //let calorieValue = calorieHour*durationValue
+        let durationValue = "\(minute).\(seconde)"
+        
+        //String to double
+        let durationDouble = Double(durationValue)
+        let weightDouble = Double(weight)
+        let calorieDouble = (7.5*3.5*weightDouble!)/200.0
+        let calorie = round(calorieDouble*durationDouble!)
+        let calorieValue = String(calorie)
         let altitudeValue = "1"
         
         //Retrieve the counter number
@@ -156,30 +172,44 @@ class JumpViewController: UIViewController {
                             }
                         }
                     }
-                    
-                    //Add the new session to session n°1
-                    let databaseRef = Database.database().reference(fromURL: "https://jumpin-c4b57.firebaseio.com/")
-                    let userID = (Auth.auth().currentUser?.uid)!
-                    let usersRef = databaseRef.child("sessions").child(userID).child("session1")
-                    let sessionValues  = ["jumps":jumpValue, "calories":calorieValue, "duration":durationValue, "altitude":altitudeValue] as [String : Any]
-                    usersRef.updateChildValues(sessionValues, withCompletionBlock: { (err, databaseRef) in
-                        if err != nil {
-                            self.createAlert(title: "Error", message: (err?.localizedDescription)!)
-                            return
-                        }
-                    })
-                    
                     //Update the counter, incrementation
                     let newCounter = Int(self.sessionNb)! + 1
                     let counterString = String(newCounter)
                     self.ref = Database.database().reference()
                     self.ref.child("sessions").child(userID).updateChildValues(["counter": counterString])
                     self.redirectionScreen()
-                    }
+                    
+                    //Add the new session
+                   // self.addNewCounter()
+                }
             }
         }
     }
 
+    
+    func addNewCounter() {
+        
+        let jumpValue = jumpText.text
+        let durationValue = "\(minute).\(seconde)"
+        let durationDouble = Double(durationValue)
+        let weightDouble = Double(weight)
+        let calorieDouble = (7.5*3.5*weightDouble!)/200.0
+        let calorie = round(calorieDouble*durationDouble!)
+        let calorieValue = String(calorie)
+        let altitudeValue = "1"
+        
+        //Add the new session to session n°1
+        let databaseRef = Database.database().reference(fromURL: "https://jumpin-c4b57.firebaseio.com/")
+        let userID = (Auth.auth().currentUser?.uid)!
+        let usersRef = databaseRef.child("sessions").child(userID).child("session1")
+        let sessionValues  = ["jumps":jumpValue, "calories":calorieValue, "duration":durationValue, "altitude":altitudeValue] as [String : Any]
+        usersRef.updateChildValues(sessionValues, withCompletionBlock: { (err, databaseRef) in
+            if err != nil {
+                self.createAlert(title: "Error", message: (err?.localizedDescription)!)
+                return
+            }
+        })
+    }
     
     //Redirection
     func redirectionScreen() {
