@@ -19,10 +19,16 @@ class JumpViewController: UIViewController {
     var sessionNb: String!
     var ref:DatabaseReference!
     
+    var timer = Timer()
+    @IBOutlet var timerLabel: UILabel!
+    var seconde = 0
+    var minute = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         pausestart.layer.cornerRadius = 10.0
         stop.layer.cornerRadius = 10.0
+        timerLabel.text = String(format: "%02d:%02d", minute, seconde)
     }
 
     override func didReceiveMemoryWarning() {
@@ -34,10 +40,26 @@ class JumpViewController: UIViewController {
         if pause == true {
             pausestart.setTitle(">",for: .normal)
             pause = false
+            timer.invalidate()
+            
         } else if pause == false {
             pausestart.setTitle("| |", for: .normal)
             pause = true
+            
+            timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(JumpViewController.action), userInfo: nil, repeats: true)
         }
+    }
+    
+    @objc func action() {
+        if seconde == 59 {
+            seconde = 0
+            minute = minute+1
+        } else {
+            seconde = seconde+1
+        }
+        
+        timerLabel.text = String(format: "%02d:%02d", minute, seconde)
+
     }
     
     //User click on stop
@@ -67,12 +89,12 @@ class JumpViewController: UIViewController {
     }
     
     private func addSession() {
-        
-        //let jumpValue = jumpText.text
-        let jumpValue = "150"
-        let calorieValue = jumpValue
-        let durationValue = "310" //Timer
-        let altitudeValue = jumpValue
+        let jumpValue = jumpText.text
+        let durationValue = "0.5"
+        //let calorieHour = (7.5*3.5*60.0)/200.0
+        let calorieValue = "200"
+        //let calorieValue = calorieHour*durationValue
+        let altitudeValue = "1"
         
         //Retrieve the counter number
         let userID = (Auth.auth().currentUser?.uid)!
@@ -85,7 +107,7 @@ class JumpViewController: UIViewController {
                     let databaseRef = Database.database().reference(fromURL: "https://jumpin-c4b57.firebaseio.com/")
                     let userID = (Auth.auth().currentUser?.uid)!
                     let usersRef = databaseRef.child("sessions").child(userID).child("session1")
-                    let sessionValues  = ["jumps":jumpValue, "calories":calorieValue, "duration":durationValue, "altitude":altitudeValue]
+                    let sessionValues  = ["jumps":jumpValue, "calories":calorieValue, "duration":durationValue, "altitude":altitudeValue] as [String : Any]
                     usersRef.updateChildValues(sessionValues, withCompletionBlock: { (err, databaseRef) in
                         if err != nil {
                             self.createAlert(title: "Error", message: (err?.localizedDescription)!)
@@ -139,7 +161,7 @@ class JumpViewController: UIViewController {
                     let databaseRef = Database.database().reference(fromURL: "https://jumpin-c4b57.firebaseio.com/")
                     let userID = (Auth.auth().currentUser?.uid)!
                     let usersRef = databaseRef.child("sessions").child(userID).child("session1")
-                    let sessionValues  = ["jumps":jumpValue, "calories":calorieValue, "duration":durationValue, "altitude":altitudeValue]
+                    let sessionValues  = ["jumps":jumpValue, "calories":calorieValue, "duration":durationValue, "altitude":altitudeValue] as [String : Any]
                     usersRef.updateChildValues(sessionValues, withCompletionBlock: { (err, databaseRef) in
                         if err != nil {
                             self.createAlert(title: "Error", message: (err?.localizedDescription)!)
@@ -174,6 +196,4 @@ class JumpViewController: UIViewController {
         }))
         self.present(alert, animated: true, completion: nil)
     }
-    
-    
 }
