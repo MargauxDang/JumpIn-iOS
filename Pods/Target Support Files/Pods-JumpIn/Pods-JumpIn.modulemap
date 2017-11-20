@@ -1,0 +1,6 @@
+framework module Pods_JumpIn {
+  umbrella header "Pods-JumpIn-umbrella.h"
+
+  export *
+  module * { export * }
+}
