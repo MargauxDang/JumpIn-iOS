@@ -25,11 +25,21 @@ class JumpViewController: UIViewController {
     var seconde = 0
     var minute = 0
     
+    let imageName = "TapToStart.png"
+    var image: UIImage!
+    var imageView: UIImageView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         pausestart.layer.cornerRadius = 10.0
         stop.layer.cornerRadius = 10.0
         timerLabel.text = String(format: "%02d:%02d", minute, seconde)
+        
+        image = UIImage(named: imageName)
+        imageView = UIImageView(image: image!)
+        
+        imageView.frame = CGRect(x: view.frame.size.width/8, y: view.frame.size.height-250, width: 150, height: 100)
+        view.addSubview(imageView)
     }
 
     override func didReceiveMemoryWarning() {
@@ -44,12 +54,33 @@ class JumpViewController: UIViewController {
             timer.invalidate()
             
         } else if pause == false {
+            
+            //If the user didn't put weight/high, have to alert him
+            let userID = (Auth.auth().currentUser?.uid)!
+            Database.database().reference().child("users").child(userID).observeSingleEvent(of: .value) { (snapshot) in
+                if let dictionary = snapshot.value as? [String: AnyObject] {
+                   let high = dictionary["high"] as? String
+                   let weight = dictionary["weight"] as? String
+                    self.startJumping(high: high!, weight: weight!)
+                }
+            }
+        }
+    }
+    
+    
+    func startJumping(high:String, weight:String) {
+        
+        if (high == "" || weight == "") {
+            self.alertMissingInfo(title: "Warning", message: "You have to enter weight and high before starting")
+        
+        } else {
             pausestart.setTitle("| |", for: .normal)
             pause = true
-            
+            imageView.removeFromSuperview()
             timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(JumpViewController.action), userInfo: nil, repeats: true)
         }
     }
+    
     
     @objc func action() {
         if seconde == 59 {
@@ -255,6 +286,21 @@ class JumpViewController: UIViewController {
         let alert = UIAlertController (title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title:"Ok", style:UIAlertActionStyle.default, handler: { (action) in
             alert.dismiss(animated: true, completion: nil)
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func alertMissingInfo(title: String, message:String) {
+        let alert = UIAlertController (title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title:"Cancel", style:UIAlertActionStyle.destructive, handler: { (action) in
+            alert.dismiss(animated: true, completion: nil)
+        }))
+        alert.addAction(UIAlertAction(title:"Ok", style:UIAlertActionStyle.default, handler: { (action) in
+            alert.dismiss(animated: true, completion: nil)
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let viewController = storyboard.instantiateViewController(withIdentifier :"InfoViewController") as! InfoViewController
+            self.present(viewController, animated: true)
+            
         }))
         self.present(alert, animated: true, completion: nil)
     }

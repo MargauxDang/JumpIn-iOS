@@ -1518,7 +1518,7 @@
         <!--Info View Controller-->
         <scene sceneID="mkL-Ur-2Wz">
             <objects>
-                <viewController id="ued-1z-NAA" customClass="InfoViewController" customModule="JumpIn" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="InfoViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ued-1z-NAA" customClass="InfoViewController" customModule="JumpIn" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="sd5-FN-9D6">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2228,7 +2228,7 @@
         <image name="settings" width="64" height="64"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="wbv-cQ-Rjb"/>
+        <segue reference="YlC-fj-eeA"/>
         <segue reference="hFR-aO-lYB"/>
     </inferredMetricsTieBreakers>
 </document>
