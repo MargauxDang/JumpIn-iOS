@@ -49,15 +49,14 @@ class AccelerometerViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        //Accelerometer
-        motionManager.accelerometerUpdateInterval = 1
-        motionManager.startAccelerometerUpdates(to: OperationQueue.current!) { (data, error) in
-            if let myData = data {
-                print(myData)
-            }
-        }
+    @IBAction func goHome(_ sender: Any) {
+        motionManager.stopAccelerometerUpdates()
+        let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let redirect:MenuViewController = storyboard.instantiateViewController(withIdentifier: "MenuViewController") as! MenuViewController
+        self.present(redirect, animated: true, completion: nil)
     }
+    
+    override func viewDidAppear(_ animated: Bool) {}
     
     //User click on pause
     @IBAction func pause(_ sender: Any) {
@@ -76,6 +75,7 @@ class AccelerometerViewController: UIViewController {
                     let high = dictionary["high"] as? String
                     let weight = dictionary["weight"] as? String
                     self.startJumping(high: high!, weight: weight!)
+
                 }
             }
         }
@@ -91,6 +91,14 @@ class AccelerometerViewController: UIViewController {
             pause = true
             imageView.removeFromSuperview()
             timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(JumpViewController.action), userInfo: nil, repeats: true)
+            
+            //Accelerometer
+            motionManager.accelerometerUpdateInterval = 1
+            motionManager.startAccelerometerUpdates(to: OperationQueue.current!) { (data, error) in
+                if let myData = data {
+                    print(myData)
+                }
+            }
         }
     }
     
