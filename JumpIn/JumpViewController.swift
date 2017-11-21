@@ -149,6 +149,16 @@ class JumpViewController: UIViewController {
                             }
                         })
                     }
+                    
+                    //Create a tmp session
+                    let refTpmSession = databaseRef.child("sessions").child(userID).child("tmp")
+                    let TpmSessions  = ["jumps":"0", "calories":"0", "duration":"0", "altitude":"0"]
+                    refTpmSession.updateChildValues(TpmSessions, withCompletionBlock: { (err, databaseRef) in
+                        if err != nil {
+                            self.createAlert(title: "Error", message: (err?.localizedDescription)!)
+                            return
+                        }
+                    })
                 }
                 
                 //If there are at least 1 session
@@ -172,22 +182,15 @@ class JumpViewController: UIViewController {
                             }
                         }
                     }
-                    //Update the counter, incrementation
-                    let newCounter = Int(self.sessionNb)! + 1
-                    let counterString = String(newCounter)
-                    self.ref = Database.database().reference()
-                    self.ref.child("sessions").child(userID).updateChildValues(["counter": counterString])
-                    self.redirectionScreen()
-                    
                     //Add the new session
-                   // self.addNewCounter()
+                    self.addNewSession()
                 }
             }
         }
     }
 
     
-    func addNewCounter() {
+        func addNewSession() {
         
         let jumpValue = jumpText.text
         let durationValue = "\(minute).\(seconde)"
@@ -198,17 +201,46 @@ class JumpViewController: UIViewController {
         let calorieValue = String(calorie)
         let altitudeValue = "1"
         
-        //Add the new session to session n°1
-        let databaseRef = Database.database().reference(fromURL: "https://jumpin-c4b57.firebaseio.com/")
+        //Add the new session to a temporary session
+            let databaseRef = Database.database().reference(fromURL: "https://jumpin-c4b57.firebaseio.com/")
+            let userID = (Auth.auth().currentUser?.uid)!
+            let ref = databaseRef.child("sessions").child(userID).child("tmp")
+            let tmpSession  = ["altitude": altitudeValue,"duration": durationValue, "calories": calorieValue, "jumps": jumpValue]
+            ref.updateChildValues(tmpSession, withCompletionBlock: { (err, databaseRef) in
+                self.retrieveSession()
+                if err != nil {
+                    self.createAlert(title: "Error", message: (err?.localizedDescription)!)
+                    return
+                }
+            })
+    }
+    
+    //Replace the session 1 by the temporary session
+    func retrieveSession() {
         let userID = (Auth.auth().currentUser?.uid)!
-        let usersRef = databaseRef.child("sessions").child(userID).child("session1")
-        let sessionValues  = ["jumps":jumpValue, "calories":calorieValue, "duration":durationValue, "altitude":altitudeValue] as [String : Any]
-        usersRef.updateChildValues(sessionValues, withCompletionBlock: { (err, databaseRef) in
-            if err != nil {
-                self.createAlert(title: "Error", message: (err?.localizedDescription)!)
-                return
+        Database.database().reference().child("sessions").child(userID).child("tmp").observeSingleEvent(of: .value)
+        { (snapshot) in
+            if let dic = snapshot.value as? [String: AnyObject] {
+                let tmpAltitude = dic["altitude"] as? String
+                let tmpDuration = dic["duration"] as? String
+                let tmpJump = dic["jumps"] as? String
+                let tmpCalories = dic["calories"] as? String
+                self.replace(altitude: tmpAltitude!, duration: tmpDuration!, jumps: tmpJump!, calories: tmpCalories!)
             }
-        })
+        }
+    }
+    
+    func replace(altitude: String, duration: String, jumps: String, calories: String) {
+        let userID = (Auth.auth().currentUser?.uid)!
+        self.ref = Database.database().reference()
+        self.ref.child("sessions").child(userID).child("session1").updateChildValues(["altitude": altitude, "duration": duration, "jumps": jumps, "calories": calories])
+        
+        //Update the counter, incrementation
+        let newCounter = Int(self.sessionNb)! + 1
+        let counterString = String(newCounter)
+        self.ref = Database.database().reference()
+        self.ref.child("sessions").child(userID).updateChildValues(["counter": counterString])
+        self.redirectionScreen()
     }
     
     //Redirection
