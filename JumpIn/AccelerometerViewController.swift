@@ -18,12 +18,18 @@ class AccelerometerViewController: UIViewController {
     var pause = false
     var sessionNb: String!
     var ref:DatabaseReference!
+    var weight:String!
+    
+    var timer = Timer()
     @IBOutlet var countingTime: UILabel!
+    var seconde = 0
+    var minute = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         pausestart.layer.cornerRadius = 10.0
         stop.layer.cornerRadius = 10.0
+        countingTime.text = String(format: "%02d:%02d", minute, seconde)
     }
     
     override func didReceiveMemoryWarning() {
@@ -35,10 +41,25 @@ class AccelerometerViewController: UIViewController {
         if pause == true {
             pausestart.setTitle(">",for: .normal)
             pause = false
+            timer.invalidate()
+            
         } else if pause == false {
             pausestart.setTitle("| |", for: .normal)
             pause = true
+            
+            timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(AccelerometerViewController.action), userInfo: nil, repeats: true)
         }
+    }
+    
+    @objc func action() {
+        if seconde == 59 {
+            seconde = 0
+            minute = minute+1
+        } else {
+            seconde = seconde+1
+        }
+        
+        countingTime.text = String(format: "%02d:%02d", minute, seconde)
     }
     
     //User click on stop
@@ -68,12 +89,27 @@ class AccelerometerViewController: UIViewController {
     }
     
     private func addSession() {
+        let userID = (Auth.auth().currentUser?.uid)!
+        Database.database().reference().child("users").child(userID).observeSingleEvent(of: .value)
+        { (snapshot) in
+            if let dic = snapshot.value as? [String: AnyObject] {
+                self.weight = dic["weight"] as? String
+                self.calculeCalories(weight: self.weight)
+            }
+        }
+    }
+    
+    func calculeCalories(weight: String) {
+        let jumpValue = jumpText.text
+        let durationValue = "\(minute).\(seconde)"
         
-        //let jumpValue = jumpText.text
-        let jumpValue = "150"
-        let calorieValue = jumpValue
-        let durationValue = "310" //Timer
-        let altitudeValue = jumpValue
+        //String to double
+        let durationDouble = Double(durationValue)
+        let weightDouble = Double(weight)
+        let calorieDouble = (7.5*3.5*weightDouble!)/200.0
+        let calorie = round(calorieDouble*durationDouble!)
+        let calorieValue = String(calorie)
+        let altitudeValue = "1"
         
         //Retrieve the counter number
         let userID = (Auth.auth().currentUser?.uid)!
@@ -86,7 +122,7 @@ class AccelerometerViewController: UIViewController {
                     let databaseRef = Database.database().reference(fromURL: "https://jumpin-c4b57.firebaseio.com/")
                     let userID = (Auth.auth().currentUser?.uid)!
                     let usersRef = databaseRef.child("sessions").child(userID).child("session1")
-                    let sessionValues  = ["jumps":jumpValue, "calories":calorieValue, "duration":durationValue, "altitude":altitudeValue]
+                    let sessionValues  = ["jumps":jumpValue, "calories":calorieValue, "duration":durationValue, "altitude":altitudeValue] as [String : Any]
                     usersRef.updateChildValues(sessionValues, withCompletionBlock: { (err, databaseRef) in
                         if err != nil {
                             self.createAlert(title: "Error", message: (err?.localizedDescription)!)
@@ -112,6 +148,16 @@ class AccelerometerViewController: UIViewController {
                             }
                         })
                     }
+                    
+                    //Create a tmp session
+                    let refTpmSession = databaseRef.child("sessions").child(userID).child("tmp")
+                    let TpmSessions  = ["jumps":"0", "calories":"0", "duration":"0", "altitude":"0"]
+                    refTpmSession.updateChildValues(TpmSessions, withCompletionBlock: { (err, databaseRef) in
+                        if err != nil {
+                            self.createAlert(title: "Error", message: (err?.localizedDescription)!)
+                            return
+                        }
+                    })
                 }
                 
                 //If there are at least 1 session
@@ -135,28 +181,65 @@ class AccelerometerViewController: UIViewController {
                             }
                         }
                     }
-                    
-                    //Add the new session to session n°1
-                    let databaseRef = Database.database().reference(fromURL: "https://jumpin-c4b57.firebaseio.com/")
-                    let userID = (Auth.auth().currentUser?.uid)!
-                    let usersRef = databaseRef.child("sessions").child(userID).child("session1")
-                    let sessionValues  = ["jumps":jumpValue, "calories":calorieValue, "duration":durationValue, "altitude":altitudeValue]
-                    usersRef.updateChildValues(sessionValues, withCompletionBlock: { (err, databaseRef) in
-                        if err != nil {
-                            self.createAlert(title: "Error", message: (err?.localizedDescription)!)
-                            return
-                        }
-                    })
-                    
-                    //Update the counter, incrementation
-                    let newCounter = Int(self.sessionNb)! + 1
-                    let counterString = String(newCounter)
-                    self.ref = Database.database().reference()
-                    self.ref.child("sessions").child(userID).updateChildValues(["counter": counterString])
-                    self.redirectionScreen()
+                    //Add the new session
+                    self.addNewSession()
                 }
             }
         }
+    }
+    
+    
+    func addNewSession() {
+        
+        let jumpValue = jumpText.text
+        let durationValue = "\(minute).\(seconde)"
+        let durationDouble = Double(durationValue)
+        let weightDouble = Double(weight)
+        let calorieDouble = (7.5*3.5*weightDouble!)/200.0
+        let calorie = round(calorieDouble*durationDouble!)
+        let calorieValue = String(calorie)
+        let altitudeValue = "1"
+        
+        //Add the new session to a temporary session
+        let databaseRef = Database.database().reference(fromURL: "https://jumpin-c4b57.firebaseio.com/")
+        let userID = (Auth.auth().currentUser?.uid)!
+        let ref = databaseRef.child("sessions").child(userID).child("tmp")
+        let tmpSession  = ["altitude": altitudeValue,"duration": durationValue, "calories": calorieValue, "jumps": jumpValue]
+        ref.updateChildValues(tmpSession, withCompletionBlock: { (err, databaseRef) in
+            self.retrieveSession()
+            if err != nil {
+                self.createAlert(title: "Error", message: (err?.localizedDescription)!)
+                return
+            }
+        })
+    }
+    
+    //Replace the session 1 by the temporary session
+    func retrieveSession() {
+        let userID = (Auth.auth().currentUser?.uid)!
+        Database.database().reference().child("sessions").child(userID).child("tmp").observeSingleEvent(of: .value)
+        { (snapshot) in
+            if let dic = snapshot.value as? [String: AnyObject] {
+                let tmpAltitude = dic["altitude"] as? String
+                let tmpDuration = dic["duration"] as? String
+                let tmpJump = dic["jumps"] as? String
+                let tmpCalories = dic["calories"] as? String
+                self.replace(altitude: tmpAltitude!, duration: tmpDuration!, jumps: tmpJump!, calories: tmpCalories!)
+            }
+        }
+    }
+    
+    func replace(altitude: String, duration: String, jumps: String, calories: String) {
+        let userID = (Auth.auth().currentUser?.uid)!
+        self.ref = Database.database().reference()
+        self.ref.child("sessions").child(userID).child("session1").updateChildValues(["altitude": altitude, "duration": duration, "jumps": jumps, "calories": calories])
+        
+        //Update the counter, incrementation
+        let newCounter = Int(self.sessionNb)! + 1
+        let counterString = String(newCounter)
+        self.ref = Database.database().reference()
+        self.ref.child("sessions").child(userID).updateChildValues(["counter": counterString])
+        self.redirectionScreen()
     }
     
     
