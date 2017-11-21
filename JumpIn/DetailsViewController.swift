@@ -26,8 +26,8 @@ class DetailViewController: UIViewController {
     var ref:DatabaseReference!
     let loadingTextLabel = UILabel()
     var activityIndicator:UIActivityIndicatorView = UIActivityIndicatorView()
-
-
+    
+    
     @IBOutlet var session1txt: UIButton!
     @IBOutlet var session2txt: UIButton!
     @IBOutlet var session3txt: UIButton!
@@ -74,30 +74,30 @@ class DetailViewController: UIViewController {
         })
         
         Database.database().reference().child("sessions").child(userID).child("session1").observeSingleEvent(of: .value) { (snapshot) in
-                if let userDict = snapshot.value as? [String:Any] {
-                    self.session1txt.setTitle(userDict[activity] as? String, for: .normal)
-                    self.session1 = userDict[activity] as? String
-                    
-                    // If the user never did session, we just print a message
-                    if (self.session1 != "0") {
-                        //Waiting message
-                        self.activityIndicator.center = self.view.center
-                        self.activityIndicator.hidesWhenStopped = true
-                        self.activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
-                        self.view.addSubview(self.activityIndicator)
-                        self.activityIndicator.startAnimating()
-                        UIApplication.shared.beginIgnoringInteractionEvents()
-                        self.loadingTextLabel.text = "Wait please, loading..."
-                        self.loadingTextLabel.font = UIFont(name: "Avenir Light", size: 12)
-                        self.loadingTextLabel.sizeToFit()
-                        self.loadingTextLabel.center = CGPoint(x: self.activityIndicator.center.x, y: self.activityIndicator.center.y + 30)
-                        self.view.addSubview(self.loadingTextLabel)
-                    }
-                    
-                    self.printSession2(activity: activity, session1: self.session1)
+            if let userDict = snapshot.value as? [String:Any] {
+                self.session1txt.setTitle(userDict[activity] as? String, for: .normal)
+                self.session1 = userDict[activity] as? String
+                
+                // If the user never did session, we just print a message
+                if (self.session1 != "0") {
+                    //Waiting message
+                    self.activityIndicator.center = self.view.center
+                    self.activityIndicator.hidesWhenStopped = true
+                    self.activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
+                    self.view.addSubview(self.activityIndicator)
+                    self.activityIndicator.startAnimating()
+                    UIApplication.shared.beginIgnoringInteractionEvents()
+                    self.loadingTextLabel.text = "Wait please, loading..."
+                    self.loadingTextLabel.font = UIFont(name: "Avenir Light", size: 12)
+                    self.loadingTextLabel.sizeToFit()
+                    self.loadingTextLabel.center = CGPoint(x: self.activityIndicator.center.x, y: self.activityIndicator.center.y + 30)
+                    self.view.addSubview(self.loadingTextLabel)
                 }
+                
+                self.printSession2(activity: activity, session1: self.session1)
             }
         }
+    }
     
     private func printSession2(activity: String, session1: String) {
         let userID = (Auth.auth().currentUser?.uid)!
@@ -201,33 +201,37 @@ class DetailViewController: UIViewController {
     //Draw the bar charts
     private func setChart(activity: String, session1: String, session2: String, session3: String, session4: String, session5: String, session6: String, session7: String, session8: String, session9: String, session10: String) {
         
+        let sess1Double = Double(session1)
+        let sess2Double = Double(session2)
+        let sess3Double = Double(session3)
+        let sess4Double = Double(session4)
+        let sess5Double = Double(session5)
+        let sess6Double = Double(session6)
+        let sess7Double = Double(session7)
+        let sess8Double = Double(session8)
+        let sess9Double = Double(session9)
+        let sess10Double = Double(session10)
+        
         if session1 != "0" {
-        //Initialize string to CGPloat
-        guard let sess1 = NumberFormatter().number(from: session1) else { return }
-        guard let sess2 = NumberFormatter().number(from: session2) else { return }
-        guard let sess3 = NumberFormatter().number(from: session3) else { return }
-        guard let sess4 = NumberFormatter().number(from: session4) else { return }
-        guard let sess5 = NumberFormatter().number(from: session5) else { return }
-        guard let sess6 = NumberFormatter().number(from: session6) else { return }
-        guard let sess7 = NumberFormatter().number(from: session7) else { return }
-        guard let sess8 = NumberFormatter().number(from: session8) else { return }
-        guard let sess9 = NumberFormatter().number(from: session9) else { return }
-        guard let sess10 = NumberFormatter().number(from: session10) else { return }
-        
-        let barChart = PNBarChart(frame: CGRect(x: 0, y: 50, width: 320, height: 200))
-        barChart.backgroundColor = UIColor.clear
-        barChart.animationType = .Waterfall
-        barChart.labelMarginTop = 5.0
-        barChart.xLabels = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10" ]
-        barChart.yValues = [CGFloat(sess1),CGFloat(sess2),CGFloat(sess3),CGFloat(sess4),CGFloat(sess5),CGFloat(sess6),CGFloat(sess7),CGFloat(sess8),CGFloat(sess9), CGFloat(sess10)]
-        barChart.strokeChart()
-        barChart.center = self.view.center
-        self.view.addSubview(barChart)
-        
-        //Dismiss message
-        loadingTextLabel.text = ""
-        activityIndicator.stopAnimating()
-        UIApplication.shared.endIgnoringInteractionEvents()
+            //Initialize string to CGPloat
+            
+            let barChart = PNBarChart(frame: CGRect(x: 0, y: 50, width: 320, height: 200))
+            barChart.backgroundColor = UIColor.clear
+            barChart.animationType = .Waterfall
+            barChart.labelMarginTop = 5.0
+            barChart.xLabels = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10" ]
+            barChart.yValues = [CGFloat(sess1Double!),CGFloat(sess2Double!),CGFloat(sess3Double!),CGFloat(sess4Double!),CGFloat(sess5Double!),CGFloat(sess6Double!),CGFloat(sess7Double!),CGFloat(sess8Double!),CGFloat(sess9Double!), CGFloat(sess10Double!)]
+            barChart.strokeChart()
+            barChart.center = self.view.center
+            self.view.addSubview(barChart)
+            
+            //Dismiss message
+            loadingTextLabel.text = ""
+            activityIndicator.stopAnimating()
+            UIApplication.shared.endIgnoringInteractionEvents()
+        } else {
+            self.warningText.setTitle("You need to do, at least, one jump", for: .normal)
         }
     }
 }
+
