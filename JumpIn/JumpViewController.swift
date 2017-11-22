@@ -9,8 +9,19 @@
 import UIKit
 import Firebase
 import FirebaseDatabase
+import CoreBluetooth
 
 class JumpViewController: UIViewController {
+    
+    private var pd = PeripheralDiscoverer.sharedInstance //singleton
+    private var selected_peripheral:CBPeripheral?
+    
+    var jump = 0
+    var realjump = 0
+    
+    var count = 0
+    var StartPressed = 0
+    
     
     //@IBOutlet var jumpText: UITextField!
     
@@ -35,6 +46,29 @@ class JumpViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.peripheralDiscoveredObs), name:NSNotification.Name(rawValue: kPDNotificationType.newPeripheralsDiscovered.rawValue), object: nil)
+        
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(self.peripheralStateChangedObs),
+            name:NSNotification.Name(rawValue: kPDNotificationType.peripheralStateChanged.rawValue),
+            object: nil)
+        
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(self.servicesAndCharacteristicsDiscoveredObs),
+            name:NSNotification.Name(rawValue: kPDNotificationType.allServicesAndCharacteristicsDiscovered.rawValue),
+            object: nil)
+        
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(self.descriptorUpdatedObs),
+            name:NSNotification.Name(rawValue: kPDNotificationType.discriptorUpdated.rawValue),
+            object: nil)
+        
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(self.valueUpdatedObs),
+            name:NSNotification.Name(rawValue: kPDNotificationType.valueUpdated.rawValue),
+            object: nil)
+        
         pausestart.layer.cornerRadius = 10.0
         stop.layer.cornerRadius = 10.0
         timerLabel.text = String(format: "%02d:%02d", minute, seconde)
@@ -50,12 +84,183 @@ class JumpViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
     
+    
+    //MARK: Notification Handlers
+    @objc func peripheralDiscoveredObs(notification: NSNotification){
+        print("Yeah!!")
+        
+        let devices = PeripheralDiscoverer.sharedInstance.discovered_devices
+        
+        for key:UUID in devices.keys
+        {
+            if let device_name = devices[key]?.name
+            {
+                print("Found device:" + device_name)
+                
+                //If we have found the device we were looking for, then connect..
+                if device_name=="BandCizer048"
+                {
+                    self.selected_peripheral = pd.discovered_devices[key]
+                    
+                    PeripheralDiscoverer.sharedInstance.central!.connect(self.selected_peripheral!,options: nil)
+                    
+                }
+            }
+        }
+    }
+    
+    //MARK: Notification Handlers
+    @objc func peripheralStateChangedObs(notification: NSNotification){
+        print("peripheralStateChangedObs:")
+        
+        if let o = notification.object{
+            let p = o as! CBPeripheral
+            
+            print("peripheralStateChangedObs:\(p.state.rawValue)")
+            
+            switch (p.state){
+                
+            case .connected:
+                print("peripheralStateChangedObs: .connected")
+                break
+                
+            case .disconnected:
+                print("peripheralStateChangedObs: .disconnected")
+                break
+                
+                
+            case .connecting:
+                print("peripheralStateChangedObs: .connecting")
+                break
+                
+            case .disconnecting:
+                print("peripheralStateChangedObs: .disconnecting")
+                break
+                
+                
+            }
+            
+        }
+    }
+    
+    
+    //TODO: Neat feature -let titles be the human readable description of service/characteristic, if available
+    @objc func servicesAndCharacteristicsDiscoveredObs(notification:NSNotification){
+        print("servicesAndCharacteristicsDiscoveredObs")
+        
+        
+        if let o = notification.object{
+            let p = o as! CBPeripheral
+            
+            for s:CBService in p.services!{
+                
+                //Iterate over characteristics in service
+                for c in s.characteristics!{
+                    
+                    
+                    print("Found characteristic:" + c.uuid.uuidString)
+                    
+                    if c.uuid.uuidString=="A2C70031-8F31-11E3-B148-0002A5D5C51B"
+                    {//enable notification for specific characteristic
+                        p.setNotifyValue(true, for: c)
+                    }
+                    
+                }
+            }
+        }
+    }
+    
+    //Process descriptors from device: e.g. User Description 0x2901
+    //Descriptor UUID's:
+    //https://developer.bluetooth.org/gatt/descriptors/Pages/DescriptorsHomePage.aspx
+    @objc func descriptorUpdatedObs(notification:NSNotification){
+        print("descriptorUpdatedObs")
+        
+        if let o = notification.object{
+            let d = o as! CBDescriptor
+            
+            if d.uuid == CBUUID(string: "2901") //User description
+            {
+                print("Human readable description for UUID:" +
+                    d.characteristic.uuid.uuidString +
+                    " is" +
+                    (d.value as! String)
+                )
+            }
+        }
+    }
+    
+    
+    @objc func valueUpdatedObs(notification:NSNotification){
+        //print("valueUpdatedObs")
+        
+        if (StartPressed==1)
+    {
+        if let o = notification.object
+        {
+            let c = o as! CBCharacteristic
+            
+            print("length = \((c.value!.count))")
+            
+            var xvalue: Int = 0
+            var yvalue: Int = 0
+            var zvalue: Int = 0
+            var Avalue: Double = 0
+            
+            xvalue = c.value!.subdata(in: 2..<4).withUnsafeBytes { $0.pointee }
+            yvalue = c.value!.subdata(in: 4..<6).withUnsafeBytes { $0.pointee }
+            zvalue = c.value!.subdata(in: 6..<8).withUnsafeBytes { $0.pointee }
+            
+            if ( xvalue > 32767)
+            {
+                xvalue = xvalue - 65536
+            }
+            
+            if ( yvalue > 32767)
+            {
+                yvalue = yvalue - 65536
+            }
+            
+            if ( zvalue > 32767)
+            {
+                zvalue = zvalue - 65536
+            }
+            
+            Avalue = sqrt((Double)(xvalue*xvalue + yvalue*yvalue + zvalue*zvalue))
+            
+            print("X value \(xvalue)")
+            print("Y value \(yvalue)")
+            print("Z value \(zvalue)")
+            print("Average value \(Avalue)")
+            
+            if ( Avalue > 20000 && count == 0 )
+            {
+                jump = jump + 1
+                count = 1
+            }
+            if (Avalue<10000 )
+            {
+                count = 0
+            }
+            
+            realjump = (Int)(jump/4)
+            print ("number jump \(realjump)")
+            self.jumpText.text = (String)(self.realjump)
+            
+        }
+    }
+        
+}
+    
+    
+    
     //User click on pause
     @IBAction func pause(_ sender: Any) {
         if pause == true {
             pausestart.setTitle(">",for: .normal)
             pause = false
             timer.invalidate()
+            StartPressed=0
             
         } else if pause == false {
             
@@ -65,7 +270,8 @@ class JumpViewController: UIViewController {
                 if let dictionary = snapshot.value as? [String: AnyObject] {
                    let high = dictionary["high"] as? String
                    let weight = dictionary["weight"] as? String
-                    self.startJumping(high: high!, weight: weight!)
+                   self.startJumping(high: high!, weight: weight!)
+                    self.StartPressed=1
                 }
             }
         }
@@ -104,6 +310,7 @@ class JumpViewController: UIViewController {
         let databaseRef = Database.database().reference(fromURL: "https://jumpin-c4b57.firebaseio.com/")
         let userID = (Auth.auth().currentUser?.uid)!
         let usersRef = databaseRef.child("sessions").child(userID)
+        StartPressed=0
         
         //Check if session 1 exist, else create ot
         databaseRef.child("sessions").child(userID).observeSingleEvent(of: .value, with: { (snapshot) in

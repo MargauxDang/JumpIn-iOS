@@ -26,6 +26,7 @@ class AccelerometerViewController: UIViewController {
     var count = 0
     
     
+    
     var timer = Timer()
     @IBOutlet var countingTime: UILabel!
     var seconde = 0
@@ -117,17 +118,17 @@ class AccelerometerViewController: UIViewController {
                     print("Z value \(zvalue)")
                     print("Average value \(Avalue)")
                     
-                    if ( Avalue > 1.5 && self.count == 0 )
+                    if ( Avalue > 3.2 && self.count == 0 )
                     {
                         self.jump = self.jump + 1
                         self.count = 1
                     }
-                    if (Avalue<1.5 )
+                    if ( Avalue < 3.2 )
                     {
                         self.count = 0
                     }
                     
-                    self.realjump = (Int)(self.jump/2)
+                    self.realjump = (Int)(self.jump)
                     print ("number jump \(self.realjump)")
                     //can't make it into the label
                     self.jumpText.text = (String)(self.realjump)
