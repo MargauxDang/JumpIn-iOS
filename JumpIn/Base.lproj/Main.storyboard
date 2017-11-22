@@ -1797,7 +1797,7 @@
                                     <action selector="shareButton:" destination="ZHT-5p-dVf" eventType="touchUpInside" id="KWv-nt-FyE"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="osa-yM-K8m">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="osa-yM-K8m">
                                 <rect key="frame" x="164" y="366" width="46" height="34"/>
                                 <state key="normal" title="Button"/>
                             </button>
@@ -1895,6 +1895,7 @@
                             <constraint firstItem="gk9-o9-SKw" firstAttribute="leading" secondItem="lwM-sy-slc" secondAttribute="trailing" constant="101.5" id="8G0-rT-zbR"/>
                             <constraint firstItem="gk9-o9-SKw" firstAttribute="top" secondItem="N3H-Vr-2Nt" secondAttribute="bottom" constant="30" id="CDS-EI-Z50"/>
                             <constraint firstItem="dhO-y1-YD4" firstAttribute="bottom" secondItem="PVn-xg-5QM" secondAttribute="bottom" constant="20" id="D4O-kL-C2i"/>
+                            <constraint firstItem="osa-yM-K8m" firstAttribute="leading" secondItem="dhO-y1-YD4" secondAttribute="leading" constant="164" id="E5z-Pf-xdZ"/>
                             <constraint firstItem="N3H-Vr-2Nt" firstAttribute="leading" secondItem="nUI-i3-0dG" secondAttribute="trailing" constant="50" id="GBn-R9-NZo"/>
                             <constraint firstItem="x41-bR-Us5" firstAttribute="top" secondItem="lwM-sy-slc" secondAttribute="bottom" constant="42" id="GNK-Rd-L36"/>
                             <constraint firstItem="x74-Fj-McM" firstAttribute="top" secondItem="dhO-y1-YD4" secondAttribute="top" constant="41" id="Hnz-Xw-ClR"/>
@@ -1922,6 +1923,7 @@
                             <constraint firstItem="gk9-o9-SKw" firstAttribute="leading" secondItem="N3H-Vr-2Nt" secondAttribute="leading" id="rRT-wR-rhH"/>
                             <constraint firstItem="lwM-sy-slc" firstAttribute="leading" secondItem="dhO-y1-YD4" secondAttribute="leading" constant="64" id="sDO-G7-jsx"/>
                             <constraint firstItem="lwM-sy-slc" firstAttribute="top" secondItem="nUI-i3-0dG" secondAttribute="bottom" constant="22" id="xdB-d7-9z1"/>
+                            <constraint firstItem="osa-yM-K8m" firstAttribute="centerX" secondItem="bIx-oE-ZeY" secondAttribute="centerX" id="yEV-5p-RqD"/>
                             <constraint firstItem="dhO-y1-YD4" firstAttribute="trailing" secondItem="PVn-xg-5QM" secondAttribute="trailing" constant="26" id="zFp-cB-RCz"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="dhO-y1-YD4"/>
@@ -2456,7 +2458,7 @@
         <image name="settings" width="64" height="64"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="wbv-cQ-Rjb"/>
+        <segue reference="oKP-my-aRB"/>
         <segue reference="hFR-aO-lYB"/>
     </inferredMetricsTieBreakers>
 </document>
