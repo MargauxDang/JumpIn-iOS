@@ -12,8 +12,7 @@ import FirebaseDatabase
 import CoreMotion
 
 class AccelerometerViewController: UIViewController {
-    
-    @IBOutlet var jumpText: UITextField!
+    @IBOutlet var jumpText: UILabel!
     @IBOutlet var pausestart: UIButton!
     @IBOutlet var stop: UIButton!
     var pause = false
