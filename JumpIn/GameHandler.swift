@@ -31,7 +31,7 @@ class GameHandler {
         stars = 0
 
         let userDefaults = UserDefaults.standard
-        highScore = userDefaults.integer(forKey: "highScore")
+        //highScore = userDefaults.integer(forKey: "highScore")
         stars = userDefaults.integer(forKey: "stars")
         
         if let path = Bundle.main.path(forResource: "Level01", ofType: "plist") {

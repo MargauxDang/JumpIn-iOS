@@ -31,6 +31,7 @@ class AccelerometerViewController: UIViewController {
     var imageView: UIImageView!
     
     var total: Int = 0
+    var TotalJumps: Int = 0
     
     var motionManager = CMMotionManager()
     
@@ -99,42 +100,37 @@ class AccelerometerViewController: UIViewController {
             motionManager.startAccelerometerUpdates(to: OperationQueue.current!) { (data, error) in
                 if let myData = data {
                     print(myData)
+                    /*let Yaccel = myData.acceleration.y
+                    var accelTrack = Array (repeating: 9.0, count: 0)//Array to store sets of values, intialize all to 0
+                    var i=1 //tracker to provide modulo values to iterate continuously through the array
+                    accelTrack[9%i]=Yaccel //Adds the acceleration value to the array list in the current 9modx position
+                    i = i+1 //increment i. Will eventually cause issues if we exceed the max integer size, but I don't think that'll be much of an issue any time soon.
+                    let av02 = (accelTrack[0]+accelTrack[1]+accelTrack[2])/3;//  -|
+                    let av35 = (accelTrack[3]+accelTrack[4]+accelTrack[5])/3;//   | - Takes running everages of the 3 blocks of acceleration values
+                    let av68 = (accelTrack[6]+accelTrack[7]+accelTrack[8])/3;//  _|
+                    
+                    //Yes, I know this is hideous. It's also temporary
+                    if(9%i<3){
+                        if((av35<0&&av68>0)||(av35>0&&av68<0)){
+                            self.TotalJumps = self.TotalJumps + 1
+                        }
+                    }
+                    else if((9%i>3) &&  (9%i<6)){
+                        if((av02<0&&av68>0)||(av02>0&&av68<0)){
+                            self.TotalJumps = self.TotalJumps + 1
+                        }
+                    }
+                        
+                    else {
+                        if((av35<0&&av02>0)||(av35>0&&av02<0)){
+                            self.TotalJumps = self.TotalJumps + 1
+                        }
+                    }*/
+                    }
                 }
             }
         }
-    /*
-     * Test code to implement jump tracking with the accelerometer in the phone. Might totally break literally everything.
-     * Probably *will* break everything honestly
-     *
-     */
-    Yaccel = data.acceleration.y
-    var accelTrack = Array (repeating: 9, count: 0)//Array to store sets of values, intialize all to 0
-        var i=0; //tracker to provide modulo values to iterate continuously through the array
-        accelTrack(9%i)=data.acceleration.y //Adds the acceleration value to the array list in the current 9modx position
-        i++ //increment i. Will eventually cause issues if we exceed the max integer size, but I don't think that'll be much of an issue any time soon.
-        var av02 = (accelTrack(0)+accelTrack(1)+accelTrack(2))/3;//  -|
-        var av35 = (accelTrack(3)+accelTrack(4)+accelTrack(5))/3;//   | - Takes running everages of the 3 blocks of acceleration values
-        var av68 = (accelTrack(6)+accelTrack(7)+accelTrack(8))/3;//  _|
-        
-        //Yes, I know this is hideous. It's also temporary
-        if(9%i<3){
-            if((av35<0&&av68>0)||(av35>0&&av68<0)){
-                TotalJumps++;}
-        }
-         else if((9%i>3) &&  (9%i<6)){
-            if((av02<0&&av68>0)||(av02>0&&av68<0)){
-                TotalJumps++;}
-        }
-        
-       else {
-            if((av35<0&&av02>0)||(av35>0&&av02<0)){
-                TotalJumps++;}
-            
-        }
     
-    //SHould be the end of jump checking
-    }
-    //
     @objc func action() {
         if seconde == 59 {
             seconde = 0

@@ -53,4 +53,3 @@ class StatViewController: UIViewController {
         present(activityController, animated: true, completion: nil)
     }
 }
-

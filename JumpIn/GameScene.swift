@@ -37,6 +37,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     //Initialization
     override init(size: CGSize) {
+        gameOver = false
+        
         super.init(size: size)
         scaleFactor = self.size.width / 320.0
         
@@ -199,7 +201,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    //Parallaxalization effect : move "to a screen to another"
+    //Update the view
     override func update(_ currentTime: CFTimeInterval) {
         if gameOver {
             return
@@ -234,6 +236,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         // Check if we've fallen too far
         if Int(player.position.y) < currentMaxY - 300 {
+            print("loose")
             endGame()
         }
         
@@ -248,6 +251,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func endGame() {
+        print ("loose")
         gameOver = true
         GameHandler.shareInstance.saveGameScore()
         let transition = SKTransition.fade(withDuration: 0.5)
