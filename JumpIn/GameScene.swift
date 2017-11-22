@@ -146,7 +146,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //starLabel.text = "0"
         hudNode.addChild(starLabel)
         
-    } //End init
+    }
     
     //Manage collision
     func didBegin(_ contact: SKPhysicsContact) {
@@ -229,9 +229,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         //Stop
         let userID = (Auth.auth().currentUser?.uid)!
-        Database.database().reference().child("sessions").child(userID).child("session1").observeSingleEvent(of: .value) { (snapshot) in
+        Database.database().reference().child("sessions").child(userID).observeSingleEvent(of: .value) { (snapshot) in
             if let dictionary = snapshot.value as? [String: AnyObject] {
-                let newCounter = dictionary["jumps"] as? String!
+                let newCounter = dictionary["totalJump"] as? String!
                 self.sessionStop = Int(newCounter!)!
                 self.jumpStop(session: self.sessionStop)
             }

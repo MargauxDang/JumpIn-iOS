@@ -30,6 +30,8 @@ class AccelerometerViewController: UIViewController {
     var image: UIImage!
     var imageView: UIImageView!
     
+    var total: Int = 0
+    
     var motionManager = CMMotionManager()
     
     override func viewDidLoad() {
@@ -189,6 +191,7 @@ class AccelerometerViewController: UIViewController {
                         let newCounter = Int(self.sessionNb)! + 1
                         let counterString = String(newCounter)
                         self.ref.child("sessions").child(userID).updateChildValues(["counter": counterString])
+                        self.totalJump(counter: counterString)
                         self.redirectionScreen()
                     })
                     
@@ -207,6 +210,16 @@ class AccelerometerViewController: UIViewController {
                     let refTpmSession = databaseRef.child("sessions").child(userID).child("tmp")
                     let TpmSessions  = ["jumps":"0", "calories":"0", "duration":"0", "altitude":"0"]
                     refTpmSession.updateChildValues(TpmSessions, withCompletionBlock: { (err, databaseRef) in
+                        if err != nil {
+                            self.createAlert(title: "Error", message: (err?.localizedDescription)!)
+                            return
+                        }
+                    })
+                    
+                    //Create a new variable to calculte the total number of jumps
+                    let refTotalJump = databaseRef.child("sessions").child(userID)
+                    let totalJump  = ["totalJump":"0"]
+                    refTotalJump.updateChildValues(totalJump, withCompletionBlock: { (err, databaseRef) in
                         if err != nil {
                             self.createAlert(title: "Error", message: (err?.localizedDescription)!)
                             return
@@ -293,7 +306,42 @@ class AccelerometerViewController: UIViewController {
         let counterString = String(newCounter)
         self.ref = Database.database().reference()
         self.ref.child("sessions").child(userID).updateChildValues(["counter": counterString])
-        self.redirectionScreen()
+        
+        
+    //Retrieve the counter
+        Database.database().reference().child("sessions").child(userID).observeSingleEvent(of: .value)
+        { (snapshot) in
+            if let dic = snapshot.value as? [String: AnyObject] {
+                let counter = dic["counter"] as? String
+                self.redirectionScreen()
+                self.totalJump(counter: counter!)
+            }
+        }
+    }
+    
+    func totalJump(counter: String) {
+        let counterInt = Int(counter)
+        for i in 1...counterInt! {
+            let userID = (Auth.auth().currentUser?.uid)!
+            Database.database().reference().child("sessions").child(userID).child("session\(i)").observeSingleEvent(of: .value)
+            { (snapshot) in
+                if let dic = snapshot.value as? [String: AnyObject] {
+                    let jump = dic["jumps"] as? String
+                    let jumpInt = Int(jump!)
+                    self.total = self.total + (jumpInt!)
+                    
+                    if i == counterInt! {
+                        self.updateTotalJump(total: self.total)
+                    }
+                }
+            }
+        }
+    }
+    
+    func updateTotalJump(total: Int) {
+        let userID = (Auth.auth().currentUser?.uid)!
+        ref = Database.database().reference()
+        ref.child("sessions").child(userID).updateChildValues(["totalJump": total])
     }
     
     

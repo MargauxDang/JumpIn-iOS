@@ -24,18 +24,19 @@ class GameViewController: UIViewController {
     }
     
     @IBAction func info(_ sender: Any) {
-        createAlert(title: "Pause", message: "Do you want to continue ?")
+        print(GameHandler.shareInstance.stars)
+        createAlert(title: "Quit the game", message: "You will quit the game")
     }
     
     func createAlert(title: String, message:String) {
         let alert = UIAlertController (title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title:"Resume", style:UIAlertActionStyle.default, handler: { (action) in
+        alert.addAction(UIAlertAction(title:"Cancel", style:UIAlertActionStyle.default, handler: { (action) in
             alert.dismiss(animated: true, completion: nil)
         }))
         alert.addAction(UIAlertAction(title:"Quit", style:UIAlertActionStyle.destructive, handler: { (action) in
             alert.dismiss(animated: true, completion: nil)
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let viewController = storyboard.instantiateViewController(withIdentifier :"StatViewController") as! StatViewController
+            let viewController = storyboard.instantiateViewController(withIdentifier :"EndGameViewController") as! EndGameViewController
             self.present(viewController, animated: true)
 
         }))

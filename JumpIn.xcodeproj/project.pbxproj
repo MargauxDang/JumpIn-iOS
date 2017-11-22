@@ -47,6 +47,7 @@
 		07B60E131F966BF2002A5BF9 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 07B60E121F966BF2002A5BF9 /* Podfile */; };
 		07B60E421F968262002A5BF9 /* GameObjectNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B60E411F968262002A5BF9 /* GameObjectNode.swift */; };
 		07CE4A4D1FA9CC9C004A9E3E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 07CE4A4C1FA9CC9C004A9E3E /* GoogleService-Info.plist */; };
+		07E9BDE81FC4F70E00021C59 /* EndGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E9BDE71FC4F70E00021C59 /* EndGameViewController.swift */; };
 		43E3DB2E1FBC417D00F07458 /* ServiceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E3DB251FBC417900F07458 /* ServiceTableViewCell.swift */; };
 		43E3DB2F1FBC417D00F07458 /* UIColor+BTColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E3DB261FBC417900F07458 /* UIColor+BTColors.swift */; };
 		43E3DB301FBC417D00F07458 /* ConnectingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E3DB271FBC417A00F07458 /* ConnectingViewController.swift */; };
@@ -123,6 +124,7 @@
 		07B60E121F966BF2002A5BF9 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		07B60E411F968262002A5BF9 /* GameObjectNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameObjectNode.swift; sourceTree = "<group>"; };
 		07CE4A4C1FA9CC9C004A9E3E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		07E9BDE71FC4F70E00021C59 /* EndGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndGameViewController.swift; sourceTree = "<group>"; };
 		43E3DB251FBC417900F07458 /* ServiceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceTableViewCell.swift; sourceTree = "<group>"; };
 		43E3DB261FBC417900F07458 /* UIColor+BTColors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+BTColors.swift"; sourceTree = "<group>"; };
 		43E3DB271FBC417A00F07458 /* ConnectingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectingViewController.swift; sourceTree = "<group>"; };
@@ -260,6 +262,7 @@
 				078FABCA1F96A4750071AB49 /* StarNode.swift */,
 				07468AE61FA089A600139A41 /* GameHandler.swift */,
 				07468AE81FA0CE7500139A41 /* EndGameScene.swift */,
+				07E9BDE71FC4F70E00021C59 /* EndGameViewController.swift */,
 				07B60E081F966A17002A5BF9 /* ViewController.swift */,
 				074B54B41FA9ABF400F19EE6 /* SignUpViewController.swift */,
 				074B54B21FA9AB1400F19EE6 /* LoginViewController.swift */,
@@ -539,6 +542,7 @@
 				078FABC71F9699260071AB49 /* GameElements.swift in Sources */,
 				072EB6311FB619DA002E7C93 /* PNLineChartData.swift in Sources */,
 				078FABC91F96A15B0071AB49 /* PlateformNode.swift in Sources */,
+				07E9BDE81FC4F70E00021C59 /* EndGameViewController.swift in Sources */,
 				43E3DB301FBC417D00F07458 /* ConnectingViewController.swift in Sources */,
 				43E3DB321FBC417D00F07458 /* UIAlertController+Utility.swift in Sources */,
 				07468AE91FA0CE7500139A41 /* EndGameScene.swift in Sources */,
