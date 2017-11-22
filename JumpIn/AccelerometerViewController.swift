@@ -20,6 +20,12 @@ class AccelerometerViewController: UIViewController {
     var ref:DatabaseReference!
     var weight:String!
     
+    var jump = 0
+    var realjump = 0
+    
+    var count = 0
+    
+    
     var timer = Timer()
     @IBOutlet var countingTime: UILabel!
     var seconde = 0
@@ -98,33 +104,34 @@ class AccelerometerViewController: UIViewController {
             motionManager.accelerometerUpdateInterval = 0.1
             motionManager.startAccelerometerUpdates(to: OperationQueue.current!) { (data, error) in
                 if let myData = data {
-                    print(myData)
-                    /*let Yaccel = myData.acceleration.y
-                    var accelTrack = Array (repeating: 9.0, count: 0)//Array to store sets of values, intialize all to 0
-                    var i=1 //tracker to provide modulo values to iterate continuously through the array
-                    accelTrack[9%i]=Yaccel //Adds the acceleration value to the array list in the current 9modx position
-                    i = i+1 //increment i. Will eventually cause issues if we exceed the max integer size, but I don't think that'll be much of an issue any time soon.
-                    let av02 = (accelTrack[0]+accelTrack[1]+accelTrack[2])/3;//  -|
-                    let av35 = (accelTrack[3]+accelTrack[4]+accelTrack[5])/3;//   | - Takes running everages of the 3 blocks of acceleration values
-                    let av68 = (accelTrack[6]+accelTrack[7]+accelTrack[8])/3;//  _|
                     
-                    //Yes, I know this is hideous. It's also temporary
-                    if(9%i<3){
-                        if((av35<0&&av68>0)||(av35>0&&av68<0)){
-                            self.TotalJumps = self.TotalJumps + 1
-                        }
+                    var xvalue: Double = myData.acceleration.x
+                    var yvalue: Double = myData.acceleration.y
+                    var zvalue: Double = myData.acceleration.z
+                    var Avalue: Double = 0
+                    
+                    Avalue = sqrt(xvalue*xvalue + yvalue*yvalue + zvalue*zvalue)
+                    
+                    print("X value \(xvalue)")
+                    print("Y value \(yvalue)")
+                    print("Z value \(zvalue)")
+                    print("Average value \(Avalue)")
+                    
+                    if ( Avalue > 1.5 && self.count == 0 )
+                    {
+                        self.jump = self.jump + 1
+                        self.count = 1
                     }
-                    else if((9%i>3) &&  (9%i<6)){
-                        if((av02<0&&av68>0)||(av02>0&&av68<0)){
-                            self.TotalJumps = self.TotalJumps + 1
-                        }
+                    if (Avalue<1.5 )
+                    {
+                        self.count = 0
                     }
-                        
-                    else {
-                        if((av35<0&&av02>0)||(av35>0&&av02<0)){
-                            self.TotalJumps = self.TotalJumps + 1
-                        }
-                    }*/
+                    
+                    self.realjump = (Int)(self.jump/2)
+                    print ("number jump \(self.realjump)")
+                    //can't make it into the label
+                    self.jumpText.text = (String)(self.realjump)
+                    
                     }
                 }
             }
