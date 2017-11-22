@@ -96,7 +96,7 @@ class AccelerometerViewController: UIViewController {
             timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(JumpViewController.action), userInfo: nil, repeats: true)
             
             //Accelerometer
-            motionManager.accelerometerUpdateInterval = 1
+            motionManager.accelerometerUpdateInterval = 0.1
             motionManager.startAccelerometerUpdates(to: OperationQueue.current!) { (data, error) in
                 if let myData = data {
                     print(myData)
