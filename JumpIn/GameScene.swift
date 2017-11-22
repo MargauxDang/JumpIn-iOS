@@ -29,7 +29,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var endLevelY = 0
     var counter = 0
     var sessionStop = 0
-
+    var ref:DatabaseReference!
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -184,6 +184,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         player.physicsBody?.isDynamic = true
         player.physicsBody?.applyImpulse(CGVector(dx: 0.0, dy: 20.0)) //Boost
         
+        let userID = (Auth.auth().currentUser?.uid)!
+        ref = Database.database().reference()
+        
+        Database.database().reference().child("sessions").child(userID).observeSingleEvent(of: .value)
+        { (snapshot) in
+            if let dic = snapshot.value as? [String: AnyObject] {
+                let totalJump = dic["totalJump"] as? Int
+                let total = totalJump! - 1
+                
+                //Update the new jump counter
+                self.ref.child("sessions").child(userID).updateChildValues(["totalJump": total])
+            }
+        }
+        
         counter = counter+1
         print(counter)
         
@@ -223,7 +237,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         // Check if we've fallen too far
-        if Int(player.position.y) < currentMaxY - 200 {
+        if Int(player.position.y) < currentMaxY - 300 {
             endGame()
         }
         
@@ -231,9 +245,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let userID = (Auth.auth().currentUser?.uid)!
         Database.database().reference().child("sessions").child(userID).observeSingleEvent(of: .value) { (snapshot) in
             if let dictionary = snapshot.value as? [String: AnyObject] {
-                let newCounter = dictionary["totalJump"] as? String!
-                self.sessionStop = Int(newCounter!)!
-                self.jumpStop(session: self.sessionStop)
+                let newCounter = dictionary["totalJump"] as? Int!
+                self.jumpStop(session: newCounter!)
             }
         }
     }

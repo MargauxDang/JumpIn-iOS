@@ -47,15 +47,5 @@ class EndGameScene: SKScene {
         lblHighScore.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.center
         lblHighScore.text = String(format: "High Score: %d", GameHandler.shareInstance.highScore)
         addChild(lblHighScore)
-        
-        //Share button
-        //Share button is touched
-    
-        //Home button
-        //Home button is touched
-        
-        //Replay button
-        //Replay button is touched
-        
     }
 }
