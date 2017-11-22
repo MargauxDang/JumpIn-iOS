@@ -145,7 +145,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         //starLabel.text = "0"
         hudNode.addChild(starLabel)
-        
     }
     
     //Manage collision
@@ -195,12 +194,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 
                 //Update the new jump counter
                 self.ref.child("sessions").child(userID).updateChildValues(["totalJump": total])
+                self.jumpStop(total: total)
             }
         }
-        
-        counter = counter+1
-        print(counter)
-        
     }
     
     //Parallaxalization effect : move "to a screen to another"
@@ -241,18 +237,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             endGame()
         }
         
-        //Stop
-        let userID = (Auth.auth().currentUser?.uid)!
-        Database.database().reference().child("sessions").child(userID).observeSingleEvent(of: .value) { (snapshot) in
-            if let dictionary = snapshot.value as? [String: AnyObject] {
-                let newCounter = dictionary["totalJump"] as? Int!
-                self.jumpStop(session: newCounter!)
-            }
-        }
     }
     
-    func jumpStop(session: Int) {
-        if counter == session {
+    func jumpStop(total: Int) {
+        print("Test")
+        print (total)
+        if total == 0 {
             endGame()
         }
     }

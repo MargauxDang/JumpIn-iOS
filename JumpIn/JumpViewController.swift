@@ -170,7 +170,6 @@ class JumpViewController: UIViewController {
                         let counterString = String(newCounter)
                         self.ref.child("sessions").child(userID).updateChildValues(["counter": counterString])
                         self.totalJump(counter: counterString)
-                        self.redirectionScreen()
                     })
                     
                     for i in 2...10 {
@@ -203,6 +202,8 @@ class JumpViewController: UIViewController {
                             return
                         }
                     })
+                    
+                    self.redirectionScreen()
                 }
                 
                 //If there are at least 1 session
