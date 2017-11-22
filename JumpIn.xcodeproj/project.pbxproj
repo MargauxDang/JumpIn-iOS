@@ -126,7 +126,7 @@
 		07B60E411F968262002A5BF9 /* GameObjectNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameObjectNode.swift; sourceTree = "<group>"; };
 		07CE4A4C1FA9CC9C004A9E3E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		07E9BDE71FC4F70E00021C59 /* EndGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndGameViewController.swift; sourceTree = "<group>"; };
-		43E0151C1FC5CD2200B25BE4 /* PeripheralDiscoverer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PeripheralDiscoverer.swift; path = ../../../projBT4/HelloBT4/PeripheralDiscoverer.swift; sourceTree = "<group>"; };
+		43E0151C1FC5CD2200B25BE4 /* PeripheralDiscoverer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PeripheralDiscoverer.swift; path = JumpIn/PeripheralDiscoverer.swift; sourceTree = SOURCE_ROOT; };
 		43E3DB251FBC417900F07458 /* ServiceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceTableViewCell.swift; sourceTree = "<group>"; };
 		43E3DB261FBC417900F07458 /* UIColor+BTColors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+BTColors.swift"; sourceTree = "<group>"; };
 		43E3DB271FBC417A00F07458 /* ConnectingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectingViewController.swift; sourceTree = "<group>"; };
