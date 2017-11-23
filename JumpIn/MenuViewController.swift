@@ -33,8 +33,10 @@ class MenuViewController: UIViewController {
         Database.database().reference().child("sessions").child(userID).observeSingleEvent(of: .value) { (snapshot) in
             if let dictionary = snapshot.value as? [String: AnyObject] {
                 let totalJump = dictionary["totalJump"] as? Int
+                if totalJump != nil {
                 let totalString = String(totalJump!)
                 self.remainingJump.text = "Jumps remaining: \(totalString)"
+                }
             }
         }
     }

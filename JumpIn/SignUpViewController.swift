@@ -62,6 +62,15 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
                         }
                     })
                     
+                    let jumpRef = databaseRef.child("sessions").child((user?.uid)!)
+                    let refValues  = ["totalJump" : "0"]
+                    jumpRef.updateChildValues(refValues, withCompletionBlock: { (err, databaseRef) in
+                        if err != nil {
+                            self.createAlert(title: "Error", message: (err?.localizedDescription)!)
+                            return
+                        }
+                    })
+                    
                     self.redirectionScreen()
 
                 }
