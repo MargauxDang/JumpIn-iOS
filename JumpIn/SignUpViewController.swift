@@ -62,15 +62,6 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
                         }
                     })
                     
-                    let gameRef = databaseRef.child("game").child((user?.uid)!)
-                    let gameValue  = ["highscore" : 0]
-                    gameRef.updateChildValues(gameValue, withCompletionBlock: { (err, databaseRef) in
-                        if err != nil {
-                            self.createAlert(title: "Error", message: (err?.localizedDescription)!)
-                            return
-                        }
-                    })
-                
                     self.redirectionScreen()
 
                 }

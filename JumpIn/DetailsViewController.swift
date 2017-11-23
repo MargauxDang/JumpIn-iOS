@@ -213,7 +213,6 @@ class DetailViewController: UIViewController {
         let sess10Double = Double(session10)
         
         if session1 != "0" {
-            //Initialize string to CGPloat
             
             let barChart = PNBarChart(frame: CGRect(x: 0, y: 50, width: 320, height: 200))
             barChart.backgroundColor = UIColor.clear
