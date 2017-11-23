@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreBluetooth
+import UIKit
 
 enum kPDNotificationType:String{
     case newPeripheralsDiscovered
@@ -52,9 +53,7 @@ class PeripheralDiscoverer : NSObject, CBCentralManagerDelegate, CBPeripheralDel
             self.central?.scanForPeripherals(withServices:nil, options: nil)
         }
         else
-        {
-            // do something like alert the user that ble is not on
-        }
+        {}
     }
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {

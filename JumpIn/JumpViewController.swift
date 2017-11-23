@@ -22,9 +22,6 @@ class JumpViewController: UIViewController {
     var count = 0
     var StartPressed = 0
     
-    
-    //@IBOutlet var jumpText: UITextField!
-    
     @IBOutlet var jumpText: UILabel!
     @IBOutlet var pausestart: UIButton!
     @IBOutlet var stop: UIButton!
@@ -284,14 +281,11 @@ class JumpViewController: UIViewController {
             self.alertMissingInfo(title: "Warning", message: "You have to enter weight and high before starting")
         
         } else {
-            pausestart.setTitle("| |", for: .normal)
-            pause = true
-            imageView.removeFromSuperview()
-            timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(JumpViewController.action), userInfo: nil, repeats: true)
+
+            alertBluetooth(title: "Information", message: "Please, before jumping verify that bluetooth is connected")
         }
     }
-    
-    
+
     @objc func action() {
         if seconde == 59 {
             seconde = 0
@@ -531,14 +525,20 @@ class JumpViewController: UIViewController {
         ref.child("sessions").child(userID).updateChildValues(["totalJump": total])
     }
     
-    //Redirection
+    //Redirections
     func redirectionScreen() {
         let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         let redirect:StatViewController = storyboard.instantiateViewController(withIdentifier: "StatViewController") as! StatViewController
         self.present(redirect, animated: true, completion: nil)
     }
     
-    //Error alert
+    func redirectionMenu() {
+        let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let redirect:MenuViewController = storyboard.instantiateViewController(withIdentifier: "MenuViewController") as! MenuViewController
+        self.present(redirect, animated: true, completion: nil)
+    }
+    
+    //Alerts
     func createAlert(title: String, message:String) {
         let alert = UIAlertController (title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title:"Ok", style:UIAlertActionStyle.default, handler: { (action) in
@@ -549,15 +549,28 @@ class JumpViewController: UIViewController {
     
     func alertMissingInfo(title: String, message:String) {
         let alert = UIAlertController (title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title:"Cancel", style:UIAlertActionStyle.destructive, handler: { (action) in
-            alert.dismiss(animated: true, completion: nil)
-        }))
         alert.addAction(UIAlertAction(title:"Ok", style:UIAlertActionStyle.default, handler: { (action) in
             alert.dismiss(animated: true, completion: nil)
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let viewController = storyboard.instantiateViewController(withIdentifier :"InfoViewController") as! InfoViewController
             self.present(viewController, animated: true)
             
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func alertBluetooth(title: String, message:String) {
+        let alert = UIAlertController (title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title:"Cancel", style:UIAlertActionStyle.destructive, handler: { (action) in
+            alert.dismiss(animated: true, completion: nil)
+            self.redirectionMenu()
+        }))
+        
+        alert.addAction(UIAlertAction(title:"Ok", style:UIAlertActionStyle.default, handler: { (action) in
+            self.pausestart.setTitle("| |", for: .normal)
+            self.pause = true
+            self.imageView.removeFromSuperview()
+            self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(JumpViewController.action), userInfo: nil, repeats: true)
         }))
         self.present(alert, animated: true, completion: nil)
     }

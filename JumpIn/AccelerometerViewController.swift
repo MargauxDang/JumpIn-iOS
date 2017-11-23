@@ -106,9 +106,9 @@ class AccelerometerViewController: UIViewController {
             motionManager.startAccelerometerUpdates(to: OperationQueue.current!) { (data, error) in
                 if let myData = data {
                     
-                    var xvalue: Double = myData.acceleration.x
-                    var yvalue: Double = myData.acceleration.y
-                    var zvalue: Double = myData.acceleration.z
+                    let xvalue: Double = myData.acceleration.x
+                    let yvalue: Double = myData.acceleration.y
+                    let zvalue: Double = myData.acceleration.z
                     var Avalue: Double = 0
                     
                     Avalue = sqrt(xvalue*xvalue + yvalue*yvalue + zvalue*zvalue)
@@ -118,12 +118,12 @@ class AccelerometerViewController: UIViewController {
                     print("Z value \(zvalue)")
                     print("Average value \(Avalue)")
                     
-                    if ( Avalue > 3.2 && self.count == 0 )
+                    if ( Avalue > 4.2 && self.count == 0 )
                     {
                         self.jump = self.jump + 1
                         self.count = 1
                     }
-                    if ( Avalue < 3.2 )
+                    if ( Avalue < 4.2 )
                     {
                         self.count = 0
                     }
@@ -132,7 +132,6 @@ class AccelerometerViewController: UIViewController {
                     print ("number jump \(self.realjump)")
                     //can't make it into the label
                     self.jumpText.text = (String)(self.realjump)
-                    
                     }
                 }
             }

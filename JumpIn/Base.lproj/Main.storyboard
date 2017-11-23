@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="2No-4c-9ch">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="2No-4c-9ch">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -519,25 +519,48 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="danger" translatesAutoresizingMaskIntoConstraints="NO" id="jjF-L0-pZo">
+                                <rect key="frame" x="167" y="130" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="0Tf-H7-PYC"/>
+                                    <constraint firstAttribute="width" constant="40" id="rhx-Je-IDW"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="If you want accurate values, please use the external sensor" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EIo-P5-Gbw">
+                                <rect key="frame" x="69" y="171" width="237" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="237" id="StE-uu-hi6"/>
+                                    <constraint firstAttribute="height" constant="60" id="wLZ-ez-bv1"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="sqw-TD-WBW" firstAttribute="top" secondItem="aU8-dq-Vig" secondAttribute="bottom" constant="9" id="3Iy-pO-MRD"/>
                             <constraint firstItem="jHE-H3-cL0" firstAttribute="trailing" secondItem="cut-4h-KES" secondAttribute="trailing" constant="16" id="4VN-KU-0PU"/>
                             <constraint firstItem="WEu-aM-pfB" firstAttribute="top" secondItem="jHE-H3-cL0" secondAttribute="top" id="5CD-7Q-WUp"/>
+                            <constraint firstItem="EIo-P5-Gbw" firstAttribute="top" secondItem="jjF-L0-pZo" secondAttribute="bottom" constant="1" id="7Kg-MT-Clv"/>
                             <constraint firstItem="cut-4h-KES" firstAttribute="top" secondItem="jHE-H3-cL0" secondAttribute="top" constant="16" id="8lK-7s-WL2"/>
                             <constraint firstItem="9bO-hc-fHh" firstAttribute="centerX" secondItem="K5U-yA-wjy" secondAttribute="centerX" id="Hcb-pc-VC0"/>
                             <constraint firstItem="WEu-aM-pfB" firstAttribute="trailing" secondItem="jHE-H3-cL0" secondAttribute="trailing" id="IQf-JI-mSY"/>
+                            <constraint firstItem="jjF-L0-pZo" firstAttribute="top" secondItem="9bO-hc-fHh" secondAttribute="bottom" constant="17" id="JC8-dt-kOB"/>
                             <constraint firstItem="HF8-nF-XgA" firstAttribute="centerX" secondItem="K5U-yA-wjy" secondAttribute="centerX" id="MAE-cR-cmV"/>
                             <constraint firstItem="aU8-dq-Vig" firstAttribute="top" secondItem="HF8-nF-XgA" secondAttribute="bottom" constant="31" id="Ppd-eP-Gnl"/>
                             <constraint firstItem="9bO-hc-fHh" firstAttribute="top" secondItem="jHE-H3-cL0" secondAttribute="top" constant="20" id="SeP-CD-ShX"/>
+                            <constraint firstItem="HF8-nF-XgA" firstAttribute="top" secondItem="EIo-P5-Gbw" secondAttribute="bottom" constant="22" id="TbN-6G-9fb"/>
                             <constraint firstItem="WEu-aM-pfB" firstAttribute="bottom" secondItem="jHE-H3-cL0" secondAttribute="bottom" id="ThN-N8-ohu"/>
                             <constraint firstItem="jHE-H3-cL0" firstAttribute="bottom" secondItem="HSw-l1-HL1" secondAttribute="bottom" constant="48" id="ZwJ-5U-4PO"/>
                             <constraint firstItem="aU8-dq-Vig" firstAttribute="centerY" secondItem="K5U-yA-wjy" secondAttribute="centerY" id="bso-eX-rWL"/>
                             <constraint firstItem="sqw-TD-WBW" firstAttribute="centerX" secondItem="K5U-yA-wjy" secondAttribute="centerX" id="crI-aP-txX"/>
                             <constraint firstItem="HSw-l1-HL1" firstAttribute="leading" secondItem="jHE-H3-cL0" secondAttribute="leading" constant="66" id="csf-ca-0vg"/>
+                            <constraint firstItem="EIo-P5-Gbw" firstAttribute="top" secondItem="jjF-L0-pZo" secondAttribute="bottom" constant="1" id="i1g-9r-lYe"/>
                             <constraint firstItem="WEu-aM-pfB" firstAttribute="leading" secondItem="jHE-H3-cL0" secondAttribute="leading" id="jjp-Sb-4eV"/>
                             <constraint firstItem="aU8-dq-Vig" firstAttribute="centerX" secondItem="K5U-yA-wjy" secondAttribute="centerX" id="mmu-x6-Va3"/>
+                            <constraint firstItem="EIo-P5-Gbw" firstAttribute="centerX" secondItem="K5U-yA-wjy" secondAttribute="centerX" id="plQ-hO-x4p"/>
+                            <constraint firstItem="jjF-L0-pZo" firstAttribute="centerX" secondItem="K5U-yA-wjy" secondAttribute="centerX" id="sh7-ye-Mia"/>
                             <constraint firstItem="jHE-H3-cL0" firstAttribute="bottom" secondItem="awu-4g-F8A" secondAttribute="bottom" constant="48" id="tSj-aA-ghR"/>
                             <constraint firstItem="jHE-H3-cL0" firstAttribute="trailing" secondItem="awu-4g-F8A" secondAttribute="trailing" constant="66" id="zD1-UQ-06X"/>
                         </constraints>
@@ -2450,6 +2473,7 @@
         <image name="Player" width="45" height="50"/>
         <image name="background" width="853" height="1280"/>
         <image name="connexion" width="853" height="1280"/>
+        <image name="danger" width="64" height="64"/>
         <image name="empty" width="853" height="1280"/>
         <image name="exit" width="64" height="64"/>
         <image name="house" width="64" height="64"/>
