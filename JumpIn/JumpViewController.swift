@@ -25,6 +25,7 @@ class JumpViewController: UIViewController {
     @IBOutlet var jumpText: UILabel!
     @IBOutlet var pausestart: UIButton!
     @IBOutlet var stop: UIButton!
+
     var pause = false
     var sessionNb: String!
     var ref:DatabaseReference!
@@ -43,6 +44,8 @@ class JumpViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        stop.isEnabled = false
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.peripheralDiscoveredObs), name:NSNotification.Name(rawValue: kPDNotificationType.newPeripheralsDiscovered.rawValue), object: nil)
         
@@ -84,7 +87,6 @@ class JumpViewController: UIViewController {
     
     //MARK: Notification Handlers
     @objc func peripheralDiscoveredObs(notification: NSNotification){
-        print("Yeah!!")
         
         let devices = PeripheralDiscoverer.sharedInstance.discovered_devices
         
@@ -253,6 +255,7 @@ class JumpViewController: UIViewController {
     
     //User click on pause
     @IBAction func pause(_ sender: Any) {
+        stop.isEnabled = true
         if pause == true {
             pausestart.setTitle(">",for: .normal)
             pause = false

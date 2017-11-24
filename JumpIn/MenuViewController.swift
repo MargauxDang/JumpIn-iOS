@@ -47,7 +47,9 @@ class MenuViewController: UIViewController {
         Database.database().reference().child("sessions").child(userID).observeSingleEvent(of: .value) { (snapshot) in
             if let dictionary = snapshot.value as? [String: AnyObject] {
                 let totalJump = dictionary["totalJump"] as? Int
-                self.redirection(counter: totalJump!)
+                if totalJump != nil {
+                    self.redirection(counter: totalJump!)
+                }
             }
         }
     }

@@ -52,6 +52,8 @@ class AccelerometerViewController: UIViewController {
         
         imageView.frame = CGRect(x: view.frame.size.width/8, y: view.frame.size.height-250, width: 150, height: 100)
         view.addSubview(imageView)
+        
+        stop.isEnabled = false
     }
     
     override func didReceiveMemoryWarning() {
@@ -69,6 +71,7 @@ class AccelerometerViewController: UIViewController {
     
     //User click on pause
     @IBAction func pause(_ sender: Any) {
+        stop.isEnabled = true
         if pause == true {
             pausestart.setTitle(">",for: .normal)
             pause = false
